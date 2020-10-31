@@ -47,11 +47,17 @@ export const Url = {
     "https://developers.google.com/analytics/devguides/collection/analyticsjs/cross-domain",
   protocolParameters:
     "https://developers.google.com/analytics/devguides/collection/protocol/v1/parameters",
+  commonHits:
+    "https://developers.google.com/analytics/devguides/collection/protocol/v1/devguide#commonhits",
   crossDomainLinker:
     "https://developers.google.com/analytics/devguides/collection/analyticsjs/linker",
   aboutTagAssistant: "https://support.google.com/tagassistant/answer/2947093",
   aboutTagAssistantRecordings:
     "https://support.google.com/analytics/answer/6277302",
+  measurementProtocol:
+    "https://developers.google.com/analytics/devguides/collection/protocol/v1",
+  validatingMeasurement:
+    "https://developers.google.com/analytics/devguides/collection/protocol/v1/validating-hits",
 }
 
 // All data in localStorage should have its keys here.
@@ -63,4 +69,15 @@ export const StorageKey = {
   campaignBuilderTerm: "campaign-builder/term",
   campaignBuilderContent: "campaign-builder/content",
   campaignBuilderUseFragment: "campaign-builder/use-fragment",
+  bitlyAccessToken: "bitly-auth/access-token",
+  bitlyCache: "bitly-auth/cache-storage",
+}
+
+export const EventAction = {
+  bitlyShorten: "bitly_shorten",
+  bitlyAuth: "bitly_auth",
+}
+
+export const EventCategory = {
+  campaignUrlBuilder: "Campaign URL Builder",
 }
