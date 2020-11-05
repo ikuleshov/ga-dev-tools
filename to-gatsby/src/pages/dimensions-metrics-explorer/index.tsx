@@ -45,6 +45,8 @@ const DimensionsMetricsExploror = () => {
        see all the other values that can be combined in the same query.
     </Typography>
 
+    <Main/>
+
     </Layout>
   )
 }

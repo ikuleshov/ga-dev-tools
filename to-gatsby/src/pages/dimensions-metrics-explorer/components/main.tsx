@@ -26,6 +26,10 @@ import SearchBox from "./searchBox";
 import ColumnGroupList from "./columnGroupList";
 import { AutoScrollProvider } from "../../../components/auto-scroll";
 
+import {
+  getAnalyticsApi,
+} from "../../../api"
+
 const Main: React.FC = () => {
   const [searchText, setSearchText] = useLocalStorage("searchText", "");
   const [allowDeprecated, setAllowDeprecated] = useTypedLocalStorage(
@@ -70,7 +74,7 @@ const Main: React.FC = () => {
           "https://content.googleapis.com/analytics/v3/metadata/ga/columns",
           {
             headers: new Headers({
-              Authorization: `Bearer ${'token'}`,
+              Authorization:`Bearer ${window.GAPI_ACCESS_TOKEN}`,
               "If-None-Match": window.localStorage.getItem("columnsEtag") || ""
             }),
             signal: controller.signal
