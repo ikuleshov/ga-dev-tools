@@ -27,7 +27,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({
     if (copy(textToCopy)) {
       setCopied(true);
       const eventCategory = appPlusWeb
-        ? "App+Web Event Builder"
+        ? "GA4 Event Builder"
         : "Hit Builder";
       const eventLabel = link ? "link-to-event" : "payload";
       gaAll("send", "event", {
