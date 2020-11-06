@@ -14,10 +14,10 @@
 
 import * as React from "react"
 import Typography from "@material-ui/core/Typography"
+import Main from "./components/main"
+import ColumnGroupList from "./components/columnGroupList"
 import Layout from "../../components/layout"
 import { Url } from "../../constants"
-import Main from "./main"
-
 
 const DimensionsMetricsExploror = () => {
   return (
@@ -44,6 +44,9 @@ const DimensionsMetricsExploror = () => {
        to create valid combinations. Select a dimension or metric checkbox to 
        see all the other values that can be combined in the same query.
     </Typography>
+
+    <Main/>
+
     </Layout>
   )
 }
