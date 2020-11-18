@@ -12,31 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import * as React from "react";
+import * as React from "react"
 
-import CloseIcon from '@material-ui/icons/Close';
-import { useEventValue, useEventChecked } from "../../../hooks";
+import CloseIcon from "@material-ui/icons/Close"
+import { useEventValue, useEventChecked } from "../../../hooks"
 
 const SearchBox: React.FC<{
-  searchText: string;
-  onlySegments: boolean;
-  allowDeprecated: boolean;
+  searchText: string
+  onlySegments: boolean
+  allowDeprecated: boolean
 
-  setSearchText: (text: string) => void;
-  setOnlySegments: (value: boolean) => void;
-  setAllowDeprecated: (value: boolean) => void;
+  setSearchText: (text: string) => void
+  setOnlySegments: (value: boolean) => void
+  setAllowDeprecated: (value: boolean) => void
 }> = ({
   searchText,
   onlySegments,
   allowDeprecated,
   setSearchText,
   setOnlySegments,
-  setAllowDeprecated
+  setAllowDeprecated,
 }) => {
-  const setTextEvent = useEventValue(setSearchText);
-  const setOnlySegmentsEvent = useEventChecked(setOnlySegments);
-  const setAllowDeprecatedEvent = useEventChecked(setAllowDeprecated);
-  const clearText = React.useCallback(() => setSearchText(""), [setSearchText]);
+  const setTextEvent = useEventValue(setSearchText)
+  const setOnlySegmentsEvent = useEventChecked(setOnlySegments)
+  const setAllowDeprecatedEvent = useEventChecked(setAllowDeprecated)
+  const clearText = React.useCallback(() => setSearchText(""), [setSearchText])
 
   return (
     <form>
@@ -80,7 +80,7 @@ const SearchBox: React.FC<{
         </div>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default SearchBox;
+export default SearchBox

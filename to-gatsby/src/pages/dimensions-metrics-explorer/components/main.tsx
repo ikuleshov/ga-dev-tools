@@ -14,150 +14,31 @@
 
 /// <reference path = "../../../global.d.ts" />
 
-import * as React from "react";
-import { Set } from "immutable";
+import * as React from "react"
+import { useSelector } from "react-redux"
+import { Set } from "immutable"
 
-import { useLocalStorage, useTypedLocalStorage } from "../../../hooks";
+//import { useLocalStorage, useTypedLocalStorage } from "../../../hooks";
 
-import { Column } from "../common_types";
-import { CubesByColumn, cubesByColumn, allCubes } from "../cubes";
-
-import SearchBox from "./searchBox";
-import ColumnGroupList from "./columnGroupList";
-import { AutoScrollProvider } from "../../../components/auto-scroll";
-
-import {
-  getAnalyticsApi,
-} from "../../../api"
+import { getAnalyticsApi } from "../../../api"
 
 const Main: React.FC = () => {
-  const [searchText, setSearchText] = useLocalStorage("searchText", "");
-  const [allowDeprecated, setAllowDeprecated] = useTypedLocalStorage(
-    "allowDeprecated",
-    false
-  );
-  const [onlySegments, setOnlySegments] = useTypedLocalStorage(
-    "onlySegments",
-    false
-  );
-
-  // If there is a fragment, reset the search filters, to ensure that
-  // the column is definitely visible.
-  React.useEffect(() => {
-    if (window.location.hash) {
-      setSearchText("");
-      setAllowDeprecated(true);
-      setOnlySegments(false);
-    }
-  }, []);
-
-  const searchTerms = React.useMemo(
-    () =>
-      searchText
-        .toLowerCase()
-        .split(/\s+/)
-        .filter(term => term.length),
-    [searchText]
-  );
-
   // Fetch all of the columns from the metadata API
-  const [columns, setColumns] = React.useState<null | Column[]>(null);
+  // https://www.googleapis.com/discovery/v1/apis/name/version/rest
+  const gapi = useSelector((state: AppState) => state.gapi)
   React.useEffect(() => {
-    const controller = new AbortController();
+    if (gapi === undefined) return
+    gapi.client
+      .load("https://www.googleapis.com/discovery/v1/apis/analytics/v3/rest")
+      .then(() => {
+        var request = gapi.client.analytics.metadata.columns.list({
+          reportType: "ga",
+        })
+        request.execute(console.log)
+      })
+  }, [gapi])
 
-    const asyncFetch = async () => {
-      var fetchedColumns: any;
+  return <div>Main test</div>
+}
 
-      // This loop is just to retry cache misses
-      do {
-        const response = await fetch(
-          "https://content.googleapis.com/analytics/v3/metadata/ga/columns",
-          {
-            headers: new Headers({
-              Authorization:`Bearer ${window.GAPI_ACCESS_TOKEN}`,
-              "If-None-Match": window.localStorage.getItem("columnsEtag") || ""
-            }),
-            signal: controller.signal
-          }
-        );
-
-        if (response.status === 304) {
-          if (
-            response.headers.get("etag") ===
-            window.localStorage.getItem("columnsEtag")
-          ) {
-            fetchedColumns = JSON.parse(
-              window.localStorage.getItem("cachedColumnsBlob") || ""
-            );
-          } else {
-            // We got a 304 response, but our local etag changed. Retry.
-            continue;
-          }
-        } else if (response.ok) {
-          fetchedColumns = await response.json();
-
-          window.localStorage.setItem(
-            "columnsEtag",
-            response.headers.get("etag") || ""
-          );
-          window.localStorage.setItem(
-            "cachedColumnsBlob",
-            JSON.stringify(fetchedColumns)
-          );
-        } else {
-          throw new Error("Failed to get metadata columns!");
-        }
-      } while (false);
-
-      setColumns(fetchedColumns.items);
-    };
-
-    asyncFetch();
-    return () => controller.abort();
-  }, []);
-
-  // Fetch the cubes
-  const [
-    localCubesByColumn,
-    setCubesByColumn
-  ] = React.useState<null | CubesByColumn>(null);
-  React.useEffect(() => {
-    cubesByColumn().then(cubes => setCubesByColumn(cubes));
-  }, []);
-
-  const [localAllCubes, setAllCubes] = React.useState<null | Set<string>>(null);
-  React.useEffect(() => {
-    allCubes().then(cubes => setAllCubes(cubes));
-  }, []);
-
-  return (
-    <AutoScrollProvider behavior="auto" block="start">
-      <div>
-        <SearchBox
-          searchText={searchText}
-          setSearchText={setSearchText}
-          allowDeprecated={allowDeprecated}
-          setAllowDeprecated={setAllowDeprecated}
-          onlySegments={onlySegments}
-          setOnlySegments={setOnlySegments}
-        />
-        {localCubesByColumn !== null &&
-        columns !== null &&
-        localAllCubes !== null ? (
-          <ColumnGroupList
-            searchTerms={searchTerms}
-            allowDeprecated={allowDeprecated}
-            onlySegments={onlySegments}
-            columns={columns}
-            cubesByColumn={localCubesByColumn}
-            allCubes={localAllCubes}
-          />
-        ) : (
-          <div>Loading dimensions and metrics...</div>
-        )}
-      </div>
-    </AutoScrollProvider>
-  );
-};
-
-export default Main;
+export default Main

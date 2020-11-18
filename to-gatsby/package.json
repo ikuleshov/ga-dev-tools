@@ -86,7 +86,7 @@
   },
   "scripts": {
     "lint": "eslint 'src/**/*' 'lib/**/*' 'gatsby/**/*'",
-    "prettier": "prettier --write \"**/*.{js,jsx,json,md}\"",
+    "prettier": "prettier --write \"**/*.{js,jsx,json,md,tsx,ts}\"",
     "check-types": "tsc",
     "test": "yarn check-types && jest",
     "start": "yarn run develop",

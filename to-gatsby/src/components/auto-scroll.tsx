@@ -24,29 +24,29 @@
  * Additionally, whenever the fragment changes, any existing AutoScrollDiv
  * component with a matching ID will automatically scroll itself into view.
  */
-import * as React from "react";
-import { useHash } from "../hooks";
+import * as React from "react"
+import { useHash } from "../hooks"
 
 const AutoScrollContext = React.createContext<(node: HTMLElement) => void>(
   () => {
     throw new Error(
       "Rendered an AutoScrollDiv outside of an AutoScrollProvider's children"
-    );
+    )
   }
-);
+)
 
 export const AutoScrollProvider: React.FC<{
-  behavior?: ScrollBehavior;
-  block?: ScrollLogicalPosition;
-  inline?: ScrollLogicalPosition;
+  behavior?: ScrollBehavior
+  block?: ScrollLogicalPosition
+  inline?: ScrollLogicalPosition
 }> = ({ children, behavior, block }) => {
-  const navTarget = useHash();
-  const [didNav, setDidNav] = React.useState(false);
+  const navTarget = useHash()
+  const [didNav, setDidNav] = React.useState(false)
 
   // Reset didNav whenever the hash changes
   React.useEffect(() => {
-    setDidNav(false);
-  }, [navTarget]);
+    setDidNav(false)
+  }, [navTarget])
 
   // observeScrollableNode is called with nodes that want to be scrolled
   // to. It executes a scroll if that node hasn't already been scrolled to
@@ -55,39 +55,39 @@ export const AutoScrollProvider: React.FC<{
     (node: HTMLElement) => {
       // TODO: replace with localeCompare
       if (!didNav && navTarget.toLowerCase() === node.id.toLowerCase()) {
-        node.scrollIntoView({ behavior, block });
-        setDidNav(true);
+        node.scrollIntoView({ behavior, block })
+        setDidNav(true)
       }
     },
     [navTarget, didNav, setDidNav]
-  );
+  )
 
   return (
     <AutoScrollContext.Provider value={observeScrollableNode}>
       {children}
     </AutoScrollContext.Provider>
-  );
-};
+  )
+}
 
 export const AutoScrollDiv: React.FC<{ id: string; className?: string }> = ({
   children,
   id,
-  className
+  className,
 }) => {
   // Note to future developers: feel free to add additional div attributes
   // as props on this component as necessary
-  const observeScrollableNode = React.useContext(AutoScrollContext);
-  const [node, setNode] = React.useState<null | HTMLDivElement>(null);
+  const observeScrollableNode = React.useContext(AutoScrollContext)
+  const [node, setNode] = React.useState<null | HTMLDivElement>(null)
 
   React.useEffect(() => {
     if (node !== null) {
-      observeScrollableNode(node);
+      observeScrollableNode(node)
     }
-  }, [observeScrollableNode, node]);
+  }, [observeScrollableNode, node])
 
   return (
     <div id={id} className={className} ref={setNode}>
       {children}
     </div>
-  );
-};
+  )
+}
