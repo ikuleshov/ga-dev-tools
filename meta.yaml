@@ -146,6 +146,10 @@ tech:
   core_reporting_api:
     name: Core Reporting API
     url: https://developers.google.com/analytics/devguides/reporting/core/v3/
+  data_api:
+    name: Data API
+    url: https://developers.google.com/analytics/devguides/reporting/data/v1/
+    schema_url: https://developers.google.com/analytics/devguides/reporting/data/v1/api-schema
   ecjs:
     name: Enhanced Ecommerce (ec.js)
     url: https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce
