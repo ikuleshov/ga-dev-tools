@@ -181,12 +181,6 @@ const Report: React.FC<ReportProps> = ({
             ),
           }}
         />
-        <LabeledCheckbox
-          checked={includeAccessToken}
-          setChecked={setIncludeAccessToken}
-        >
-          include access token
-        </LabeledCheckbox>
         <section className={classes.reportLink}>
           <a href={permalink}>Link to this report</a>
         </section>
